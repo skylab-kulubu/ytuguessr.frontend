@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { Trophy, Gamepad2 } from "lucide-react";
 
 export default function Header() {
     const pathname = usePathname();
@@ -13,7 +14,7 @@ export default function Header() {
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.scrollY;
-            setIsScrolled(scrollTop > 50);
+            setIsScrolled(scrollTop > 20);
         };
 
         window.addEventListener('scroll', handleScroll);
@@ -28,14 +29,8 @@ export default function Header() {
         }
     };
 
-    const getButtonText = () => {
-        return isLeaderboardPage ? 'OYNA' : 'LİDER TABLOSU';
-    };
-
     return (
-        <header className={`fixed top-0 left-0 right-0 z-50 
-            flex items-center justify-between p-4 text-white
-            transition-all duration-300 ease-in-out border-b border-gray-700/50
+        <header className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 text-white transition-all duration-100 ease-in-out border-b border-gray-700/50
             ${isScrolled ? 'bg-gray-900/80 backdrop-blur-md ' : 'bg-gray-900'}`}>
 
             <div className="flex items-center">
@@ -43,9 +38,9 @@ export default function Header() {
             </div>
             
             <button 
-                className="bg-gradient-to-r from-yellow-500 to-yellow-400/95 text-white italic font-medium text-sm rounded-2xl px-4 py-1 text-shadow-md/20 text-shadow-gray-800 hover:bg-yellow-600 transition-all duration-200"
+                className="bg-gradient-to-r from-yellow-500/20 to-yellow-400/15 text-yellow-400 italic font-medium text-sm rounded-md px-2 py-2 text-shadow-md/20 text-shadow-gray-800 hover:bg-yellow-600 transition-all duration-200"
                 onClick={handleButtonClick}>
-                {getButtonText()}
+                {isLeaderboardPage ? <Gamepad2 size={18} /> : <Trophy size={18} />}
             </button>
         </header>
     );

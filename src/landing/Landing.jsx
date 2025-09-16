@@ -1,138 +1,195 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
+import { useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useSwipeable } from "react-swipeable";
+import Lottie from "lottie-react";
+import landing1 from '../../public/lottie/landing1.json'
+import landing2 from '../../public/lottie/landing2.json'
+import landing3 from '../../public/lottie/landing3.json'
 
-const EarthCanvas = dynamic(() => import("./3d/Earth"), { 
-  ssr: false,
-  loading: () => null
-});
+export default function Landing({ onComplete }) {
+  const [step, setStep] = useState(0);
 
-const StarsCanvas = dynamic(() => import("./3d/Stars"), { 
-  ssr: false,
-  loading: () => null
-});
-
-const Landing = ({ onComplete }) => {
-  const containerRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(true);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [scrollY, setScrollY] = useState(0);
+  const slides = useMemo(
+    () => [
+      {
+        title: "Yıldızı Keşfet",
+        text:
+          "Orta bahçeden kulüp odalarına, kampüsün her köşesini keşfederken kendini bulacaksın.",
+        animation: landing1
+      },
+      {
+        title: "İpuçlarını Bul",
+        text:
+          "Fotoğraflardaki detaylara dikkat et. Binalar, tabelalar ve çevre seni doğru noktaya götürür.",
+        animation: landing2
+      },
+      {
+        title: "Tahminini Yap",
+        text:
+          "Haritada noktanı işaretle, onayla ve puanını gör. Ne kadar yaklaşırsan o kadar çok puan alırsın.",
+        animation: landing3
+      },
+    ],
+    []
+  );
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (containerRef.current) {
-        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-        const maxScroll = scrollHeight - clientHeight;
-        const progress = maxScroll > 0 ? scrollTop / maxScroll : 0;
-        setScrollY(scrollTop);
-        setScrollProgress(progress);
-        
-        if (progress > 0.4) {
-          setTimeout(() => {
-            setIsVisible(false);
-            setTimeout(() => onComplete(), 300);
-          }, 200);
-        }
-      }
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
     };
+  }, []);
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [onComplete]);
+  const isLastSlide = step === slides.length;
 
-  const logoOpacity = Math.max(0, 1 - (scrollProgress / 0.3));
-  const starsOpacity = Math.max(0, 1 - (scrollProgress / 0.5));
-  const scrollHintOpacity = Math.max(0, 1 - (scrollProgress / 0.15));
-  const mainOpacity = scrollProgress > 0.3 ? Math.max(0, 1 - ((scrollProgress - 0.3) / 0.2)) : 1;
+  const goNext = () => {
+    if (step <= slides.length) {
+      setStep((s) => s + 1);
+    }
+  };
 
-  if (!isVisible) {
-    return null;
-  }
+  useEffect(() => {
+    if (step === slides.length + 1) onComplete();
+  }, [step, slides.length, onComplete]);
+
+  const swipeHandlers = useSwipeable({
+    onSwipedUp: () => goNext(),
+    onSwipedLeft: () => goNext(),
+    delta: 10,
+    preventScrollOnSwipe: true,
+    trackTouch: true,
+    trackMouse: true,
+  });
 
   return (
-    <motion.div 
-      ref={containerRef}
-      className="relative w-full h-[200vh] overflow-hidden"
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.1 }}
-      style={{ 
-        position: 'relative',
-        scrollBehavior: 'smooth',
-        overscrollBehavior: 'none',
-        WebkitOverflowScrolling: 'touch',
-        opacity: mainOpacity
-      }}
-    >
-      {/* Yıldızlar */}
-      <motion.div 
-        className="fixed inset-0 z-0"
-        style={{ opacity: starsOpacity }}
+    <div {...swipeHandlers} className="relative h-screen w-screen bg-[#1B1740] text-white flex items-center justify-center overflow-hidden">
+
+      <motion.div
+        initial={{ y: 0, scale: 1 }}
+        animate={{ y: step > 0 ? -240 : 0, scale: step > 0 ? 0.9 : 1 }}
+        transition={{ duration: 0.4 }}
+        className="absolute inset-x-0 mb-20 flex items-center justify-center"
       >
-        <StarsCanvas />
+        <div className="flex flex-col items-center">
+          <img src="/logo.svg" alt="YTUGuessr Logo" className="h-10" />
+          {step !== 0 && (
+            <span className="text-white/40 font-medium text-md">
+              Fatih Naz - Egehan Avcu
+            </span>
+          )}
+        </div>
       </motion.div>
 
-      {/* Logo */}
-      <motion.div 
-        className="fixed top-4 right-4 md:top-8 md:right-8 z-30 text-white text-right select-none"
-        style={{ opacity: logoOpacity }}
-      >
-        <motion.img 
-          className="h-8 mb-2 md:mb-4"
-          src="/logo.svg" alt="YTUGuessr Logo"
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
-        />
-        <motion.div
-          style={{ opacity: scrollHintOpacity }}
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-        >
-          <p className="text-base md:text-lg lg:text-xl text-gray-300 font-medium mb-2">
-            Başlamak için aşağı kaydır
-          </p>
-          <motion.div 
-            className="flex justify-end"
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      <AnimatePresence mode="wait">
+        {step === 0 && (
+          <motion.div
+            key="intro"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0 flex flex-col items-center justify-center"
           >
-            <svg 
-              className="w-5 h-5 md:w-6 md:h-6 text-gray-300"
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
+            <motion.div
+              initial={{ y: 0, opacity: 1 }}
+              animate={{ y: step > 0 ? 140 : 0, opacity: 0.9 }}
+              className="mt-2 text-white/70 text-sm flex items-center gap-2"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M19 14l-7 7m0 0l-7-7m7 7V3" 
-              />
-            </svg>
+              <span>Başlamak için kaydırın</span>
+              <svg className="w-5 h-5 animate-bounce" viewBox="0 0 24 24" fill="none">
+                <path d="M12 5v14M12 19l-5-5M12 19l5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Dünya Modeli */}
-      <div className="fixed inset-0 z-20">
-        <EarthCanvas scrollProgress={scrollProgress} />
-      </div>
+      <AnimatePresence mode="wait">
+        {step > 0 && step <= slides.length && (
+          <motion.div
+            key={`slide-${step}`}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
+          >
+            <Lottie
+              animationData={slides[step - 1].animation}
+              loop={true}
+              autoplay={true}
+              style={{
+                transform: step === 1 ? "scale(2)" : "scale(1)",
+              }}
+              className="w-50 h-50 overflow-hidden"
+            />
+            <motion.h2 className="text-3xl sm:text-4xl font-bold my-4">
+              {slides[step - 1].title}
+            </motion.h2>
+            <p className="max-w-xl px-2 text-gray-300 font-semibold text-sm mb-8">
+              {slides[step - 1].text}
+            </p>
 
-      {/* Gradient overlay */}
-      <motion.div 
-        className="fixed inset-0 bg-gradient-to-t from-[#1B1740] via-transparent to-transparent z-10 pointer-events-none"
-        style={{ 
-          opacity: scrollProgress > 0.7 ? Math.min(1, (scrollProgress - 0.7) / 0.25) : 0
-        }}
-      />
+            <div className="flex flex-col items-center gap-4 w-full">
+              {step < slides.length && (
+                <>
+                  <button
+                    onClick={() => goNext()}
+                    className="w-full max-w-xs px-2 py-2 rounded-xl bg-indigo-400/60 border border-indigo-800/20 text-white font-semibold shadow-md"
+                  >
+                    Devam Et
+                  </button>
+                  <div className="flex items-center w-full px-2 max-w-xs">
+                    <span className="flex-grow h-px bg-white/30"></span>
+                    <span className="px-2 mb-0.5 text-white/60 text-xs font-semibold">VEYA KAYDIR</span>
+                    <span className="flex-grow h-px bg-white/30"></span>
+                  </div>
+                </>
+              )}
 
-      {/* Görünmez kaydırılabilir kısım */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none" />
-    </motion.div>
+              {step === slides.length && (
+                <button
+                  onClick={() => setStep(slides.length + 1)}
+                  className="w-full max-w-xs px-6 py-3 rounded-xl bg-indigo-400/30 border border-indigo-400/50 text-white font-semibold shadow-md hover:bg-white/20 transition"
+                >
+                  Başla
+                </button>
+              )}
+            </div>
+
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {step !== 0 && (
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3">
+          {slides.map((_, i) => {
+            const isActive = i + 1 === step;
+            return (
+              <span
+                key={i + 1}
+                className={
+                  "w-1.5 rounded-full transition-all " +
+                  (isActive ? "h-8 bg-white/90" : "h-6 bg-white/30")
+                }
+              />
+            );
+          })}
+        </div>
+      )}
+
+      {(step === 1 || step === 2) && (
+        <button onClick={() => setStep(slides.length + 1)}
+          className="absolute top-4 right-4 px-3 py-1.5 rounded-lg text-xs bg-white/10 hover:bg-white/20 border border-white/10"
+        >
+          Atla
+        </button>
+      )}
+
+    </div>
   );
-};
+}
 
-export default Landing;

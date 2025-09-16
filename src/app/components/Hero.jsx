@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import StartGame from "./StartGame";
 import Lottie from "lottie-react";
-import { motion, useAnimation, AnimatePresence } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import mapAnimationAlt from '../../../public/lottie/locate-campus.json'
 import trophyAnimation from '../../../public/lottie/trophy.json';
 
@@ -183,13 +183,6 @@ export default function Hero() {
                   className="w-full h-full"
                 />
               </div>
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ delay: 0.5, duration: 0.8 }}
-                className="absolute inset-0 rounded-full"
-              />
             </div>
           </motion.div>
           <motion.h3

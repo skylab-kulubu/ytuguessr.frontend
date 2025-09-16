@@ -90,8 +90,8 @@ function GameCore() {
           score={guessMut.data.earned_score}
           totalScore={guessMut.data.current_score}
           distance={guessMut.data.distance_km}
-          guessCoords={guess} // Kullanıcının tahmin koordinatlarını ekle
-          correctCoords={actual} // API'den gelen doğru koordinatlar
+          guessCoords={guess}
+          correctCoords={actual}
           questionNumber={guessMut.data.question_number}
           maxQuestions={5}
           onNext={() => {
