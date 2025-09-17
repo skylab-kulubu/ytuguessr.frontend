@@ -13,7 +13,6 @@ import HUD from "./components/hud/HUD";
 import ResultModal from "./components/result/ResultModal";
 import { GameLoadingScreen } from "../components/LoadingScreen";
 
-/* GuessMap sadece tarayıcıda render edilsin */
 const GuessMap = dynamic(() => import("./components/GuessMap"), {
   ssr: false,
   loading: () => (<GameLoadingScreen />),

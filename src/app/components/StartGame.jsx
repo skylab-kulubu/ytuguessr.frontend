@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "../../lib/queryClient";
 import { startGame } from "../../lib/gameService";
 
 import Lottie from "lottie-react";
@@ -61,7 +59,6 @@ export default function StartGame() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
       <div className="bg-[#231c4b] rounded-xl px-4 py-8 mx-4 border-4 border-indigo-900">
         <h3 className="text-md font-bold text-center -mt-2 text-yellow-400 mb-4">
           Oynamak için okul e-postanı kullan
@@ -123,6 +120,5 @@ export default function StartGame() {
           </motion.button>
         </form>
       </div>
-    </QueryClientProvider>
   );
 }

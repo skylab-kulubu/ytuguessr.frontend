@@ -8,10 +8,9 @@ export function useLeaderboard(page = 1) {
     queryKey: ["leaderboard", page],
     queryFn: () => getLeaderboard(page),
     keepPreviousData: true,
-    staleTime: 1000 * 60 * 2,     // 2 dk önbellek
+    staleTime: 1000 * 60 * 2,
   });
 
-  // Veriyi yuvarlama ve vurgulama için ufak bir format katmanı
   const formatted =
     query.data && {
       page: query.data.page,
@@ -25,8 +24,11 @@ export function useLeaderboard(page = 1) {
       })),
     };
 
+  const topThree = formatted?.entries.slice(0, 3);
+
   return {
     ...query,
     formatted,
+    topThree,
   };
 }

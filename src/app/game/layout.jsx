@@ -1,9 +1,11 @@
 "use client";
 
+import { Providers } from "../../lib/providers";
+
 export default function GameLayout({ children }) {
   return (
     <div className="h-screen overflow-hidden">
-      {children}
+      <Providers>{children}</Providers>
     </div>
   );
 }
