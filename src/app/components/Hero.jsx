@@ -58,7 +58,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="w-full -mt-1 h-12 bg-gradient-to-b from-[#897fa6] to-[#1B1740]" />
+        <div className="w-full -mt-1 h-20 bg-gradient-to-b from-[#897fa6] via-[#897fa6] to-[#1B1740]" />
 
         <Podium />
       </div>

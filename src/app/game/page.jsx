@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { useCallback, useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { queryClient } from "@/lib/queryClient";
 import { useGuard } from "@/lib/hooks/useGuard";
 import { useHandleQuestion } from "@/lib/hooks/useHandleQuestion";
 
@@ -32,24 +31,10 @@ function GameCore() {
 
   const status = statusQuery.data;
 
-  /* QUESTION HANDLING HOOK ------------------------------------------------------ */
-  const {
-    question,
-    remaining,
-    guess,
-    actual,
-    setGuess,
-  } = useHandleQuestion({
-    status,
-    nextMut,
-    guessMut,
-    safeNext,
-    safeGuess,
-  });
+  const { question, remaining, guess, actual, setGuess } = useHandleQuestion({ status, nextMut, guessMut, safeNext, safeGuess });
 
   const [showMap, setShowMap] = useState(false);
 
-  /* CALLBACKS ------------------------------------------------------------------ */
   const handleConfirmGuess = useCallback(() => {
     if (!guess) return;
     safeGuess({ lat: guess[0], lng: guess[1] });
@@ -111,8 +96,6 @@ function GameCore() {
 
 export default function GamePage() {
   return (
-    <QueryClientProvider client={queryClient}>
       <GameCore />
-    </QueryClientProvider>
   );
 }

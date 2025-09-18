@@ -1,124 +1,98 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { startGame } from "../../lib/gameService";
+import { AnimatePresence, motion } from "framer-motion";
+import { Loader2, X, ChevronUp, TriangleAlert } from "lucide-react";
 
-import Lottie from "lottie-react";
-import { motion } from "framer-motion";
-import loadingAnimation from "../../../public/lottie/loading.json";
-
-const textVariants = {
-  idle: { y: "0%", transition: { duration: 0.3, ease: "easeOut" } },
-  loading: { y: "-100%", transition: { duration: 0.3, ease: "easeOut" } },
-  error: { y: "-200%", transition: { duration: 0.3, ease: "easeOut" } },
-};
-
-const loaderVariants = {
-  idle: { y: "100%", transition: { duration: 0.3, ease: "easeOut" } },
-  loading: { y: "0%", transition: { duration: 0.3, ease: "easeOut" } },
-  error: { y: "100%", transition: { duration: 0.3, ease: "easeOut" } },
-};
-
-const errorVariants = {
-  idle: { y: "200%", transition: { duration: 0.3, ease: "easeOut" } },
-  loading: { y: "200%", transition: { duration: 0.3, ease: "easeOut" } },
-  error: { y: "0%", transition: { duration: 0.3, ease: "easeOut" } },
-};
+function isValidMail(v) {
+  if (!v) return false;
+  const mail = v.trim().toLowerCase();
+  return /@(?:yildiz\.edu\.tr|std\.yildiz\.edu\.tr)$/.test(mail);
+}
 
 export default function StartGame() {
   const [mail, setMail] = useState("");
-  const [buttonState, setButtonState] = useState("idle");
-  const [error, setError] = useState(null);
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [isSchoolMail, setIsSchoolMail] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setIsSchoolMail(isValidMail(mail));
+  }, [mail]);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError(null);
-    setButtonState("loading");
-    
     try {
+      setLoading(true);
       await startGame({
-        school_mail: mail || undefined,
+        school_mail: mail,
         show_name: true,
         again: false,
       });
       router.push("/game");
-    } catch (err) {
-      const errorMessage = err.response?.data?.detail || "Başlatılamadı";
-      setError(errorMessage);
-      setButtonState("error");
-      
-      // 2 saniye sonra eski haline döndür
-      setTimeout(() => {
-        setButtonState("idle");
-        setError(null);
-      }, 2000);
+    } catch (error) {
+      const msg = error?.response?.data?.detail || "Oyun başlatılamadı.";
+      setError(msg);
+      setLoading(false);
+      setTimeout(() => setError(null), 2000);
     }
   }
 
   return (
-      <div className="bg-[#231c4b] rounded-xl px-4 py-8 mx-4 border-4 border-indigo-900">
-        <h3 className="text-md font-bold text-center -mt-2 text-yellow-400 mb-4">
-          Oynamak için okul e-postanı kullan
-        </h3>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-bold ml-0.5 mb-1">E-posta adresi</label>
-            <input
-              type="email"
-              placeholder="öğrenci@yildiz.edu.tr"
-              value={mail}
-              onChange={(e)=>setMail(e.target.value)}
-              className="w-full p-3 rounded bg-[#2c2552] border-2 border-[#3b3163] text-white"
-            />
-          </div>
-          
-          <p className="text-xs text-gray-400">
-            Oyunu oynadığınızda KVKK koşullarını kabul etmiş olursunuz.
-          </p>
-
-          <motion.button
-            type="submit"
-            disabled={buttonState === "loading"}
-            initial="idle"
-            animate={buttonState}
-            className={`w-full py-3 rounded-md text-white font-semibold relative overflow-hidden transition-all duration-500 ease-in-out ${
-            buttonState === "loading" ? "bg-gray-600" : buttonState === "error" ? "bg-red-800" : "bg-green-600 hover:bg-green-500"}`}
-            style={{
-              transition: 'background-color 0.5s ease-in-out, background-image 0.5s ease-in-out'
-            }}
-          >
-            <div className="relative h-6 overflow-hidden">
-              <motion.div
-                variants={textVariants}
-                className="absolute inset-0 flex items-center justify-center"
-              >
-                OYNA
-              </motion.div>
-              <motion.div
-                variants={loaderVariants}
-                className="absolute inset-0 flex items-center justify-center"
-              >
-                <div className="flex items-center space-x-2">
-                  <Lottie 
-                    animationData={loadingAnimation} 
-                    style={{ width: 24, height: 24 }}
-                    loop={true}
-                  />
-                </div>
-              </motion.div>
-              <motion.div
-                variants={errorVariants}
-                className="absolute inset-0 flex items-center justify-center text-sm"
-              >
-                {error}
-              </motion.div>
-            </div>
-          </motion.button>
-        </form>
+    <div className="mx-4 rounded-2xl p-5 sm:p-6 bg-white/5 backdrop-blur border border-violet-500/20 shadow-[0_1px_0_0_rgba(255,255,255,0.06)_inset,0_10px_40px_-15px_rgba(0,0,0,.6)]">
+      <div className="text-center space-y-1 mb-4">
+        <h3 className="text-lg font-extrabold text-white">OYUNA BAŞLA</h3>
       </div>
+
+      <form onSubmit={(error || !isSchoolMail || loading) ? (e) => e.preventDefault() : handleSubmit} className="space-y-4">
+        <div>
+          <div className="block text-xs font-semibold text-start ml-2 text-white/80 mb-2">
+            YTÜ E-posta adresi
+          </div>
+
+          <div className={`relative rounded-xl bg-[#2a2353]/80 border ${error ? "border-red-500/60" : "border-[#3b3163]"} focus-within:ring-2 focus-within:ring-violet-400/70`}>
+            <input placeholder="ogrenci@std.yildiz.edu.tr" value={mail}
+              onChange={(e) => setMail(e.target.value)}
+              className=" w-full bg-transparent text-white placeholder-white/40 px-4 py-3 rounded-xl outline-none"
+            />
+
+            <button type="submit" className={`absolute right-1 top-1/2 -translate-y-1/2 text-white p-3 rounded-lg ${isSchoolMail ? "bg-indigo-500" : error ? "bg-red-500/70 disabled" : loading ? "bg-indigo-300 disabled" : "bg-white/10 disabled"}`}> 
+              <AnimatePresence mode="wait">
+                <motion.div key={loading ? "loading" : error ? "error" : "default"}
+                initial={{ y: 20, opacity:0}}
+                animate={{ y: 0, opacity:1}}
+                exit={{ y: -20, opacity:0}}
+                transition={{ duration: 0.2 }}
+                >
+                 {loading ? (
+                  <Loader2 size={18} className="animate-spin"/>
+                 ) : error ? (
+                  <X size={18}/>
+                 ) :(
+                  <ChevronUp size={18} />
+                 )}
+                </motion.div>
+              </AnimatePresence>
+            </button>
+          </div>
+
+          {error && (
+            <div className="mt-2 flex items-center justify-center gap-2 text-sm text-red-300">
+              <TriangleAlert size={14} />
+              <span>{error}</span>
+            </div>
+          )}
+        </div>
+
+        <p className="text-[10px] text-white/50 leading-relaxed">
+          Oyunu oynadığınızda KVKK koşullarını kabul etmiş olursunuz.
+        </p>
+        
+      </form>
+    </div>
   );
 }
