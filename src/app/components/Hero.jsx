@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Seperator } from "./utils";
 import Lottie from "lottie-react";
 import Background from "../../../public/lottie/background.json";
 import StartGame from "./StartGame";
@@ -24,8 +25,7 @@ export default function Hero() {
           />
 
           <div className="flex flex-col justify-center px-4 h-[90vh]">
-            <motion.h1
-              className="text-4xl md:text-6xl font-extrabold italic tracking-tight"
+            <motion.h1 className="text-4xl md:text-6xl font-extrabold italic tracking-tight"
               initial={{ y: 18, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.7, ease: "easeOut", delay: 0.05 }}
@@ -33,8 +33,7 @@ export default function Hero() {
               YILDIZI KEŞFET!
             </motion.h1>
 
-            <motion.p
-              className="mt-3 max-w-xl text-gray-300 font-medium"
+            <motion.p className="mt-3 max-w-xl text-gray-300 font-medium"
               initial={{ y: 18, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
@@ -42,15 +41,13 @@ export default function Hero() {
               Orta bahçeden kulüp odalarına, kampüsün her köşesinde yeni bir macera seni bekliyor.
             </motion.p>
 
-            <motion.div
-              className="mt-6 h-[2px] w-24 mx-auto rounded-full bg-white/20"
+            <motion.div className="mt-6 h-[2px] w-24 mx-auto rounded-full bg-white/20"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.25 }}
             />
 
-            <motion.div
-              className="mt-8 w-full mx-auto max-w-md"
+            <motion.div className="mt-8 w-full mx-auto max-w-md"
               initial={{ y: 24, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
@@ -63,8 +60,7 @@ export default function Hero() {
         <div className="w-full -mt-1 h-20 bg-gradient-to-b from-[#897fa6] via-[#897fa6] to-[#1B1740]" />
 
         <div className="w-full flex flex-col items-center justify-center min-h-[80vh] px-4 py-12">
-          <motion.h2
-            className="text-3xl md:text-4xl font-bold tracking-tight"
+          <motion.h2 className="text-3xl md:text-4xl font-bold tracking-tight"
             initial={{ y: 18, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.05 }}
@@ -72,8 +68,7 @@ export default function Hero() {
           >
             PARLAYAN YILDIZLAR
           </motion.h2>
-          <motion.p
-            className="mt-2 mb-6 text-gray-300 font-medium max-w-md mx-auto"
+          <motion.p className="mt-2 mb-6 text-gray-300 font-medium max-w-md mx-auto"
             initial={{ y: 18, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
@@ -82,21 +77,7 @@ export default function Hero() {
             En yüksek skorlara sahip 3 oyuncu
           </motion.p>
 
-          <motion.div
-            className="flex items-center justify-center mb-8"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.25 }}
-            viewport={{ once: true }}
-          >
-            <div className="h-[1px] w-16 bg-gradient-to-r from-transparent to-violet-400/40"></div>
-            <div className="mx-3 flex space-x-1">
-              <div className="w-1 h-1 rounded-full bg-violet-400"></div>
-              <div className="w-1 h-1 rounded-full bg-violet-300"></div>
-              <div className="w-1 h-1 rounded-full bg-violet-400"></div>
-            </div>
-            <div className="h-[1px] w-16 bg-gradient-to-l from-transparent to-violet-400/40"></div>
-          </motion.div>
+          <Seperator />
           
           <Podium />
 

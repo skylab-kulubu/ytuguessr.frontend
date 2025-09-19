@@ -18,3 +18,22 @@ export function CountUp({ number, active }) {
 
     return <motion.span>{rounded}</motion.span>;
 }
+
+export function Seperator() {
+    return (
+        <motion.div className="flex items-center justify-center mb-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.25 }}
+            viewport={{ once: true }}
+          >
+            <div className="h-[1px] w-16 bg-gradient-to-r from-transparent to-violet-400/40"></div>
+            <div className="mx-3 flex space-x-1">
+              <div className="w-1 h-1 rounded-full bg-violet-400"></div>
+              <div className="w-1 h-1 rounded-full bg-violet-300"></div>
+              <div className="w-1 h-1 rounded-full bg-violet-400"></div>
+            </div>
+            <div className="h-[1px] w-16 bg-gradient-to-l from-transparent to-violet-400/40"></div>
+          </motion.div>
+    );
+}

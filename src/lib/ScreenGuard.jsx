@@ -48,7 +48,7 @@ function ScreenSizeError() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.9 }}
         >
-          Bu deneyim mobil cihazlar için optimize edilmiştir. Lütfen telefonunuzdan veya tabletten erişin.
+          Bu uygulama mobil cihazlar için optimize edilmiştir. Lütfen telefonunuzdan veya tabletten erişin.
         </motion.p>
       </div>
     </div>

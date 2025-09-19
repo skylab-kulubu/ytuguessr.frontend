@@ -16,6 +16,7 @@ export function useLeaderboard(page = 1) {
       page: query.data.page,
       totalPages: query.data.total_pages,
       totalUsers: query.data.total_users,
+      userRank: query.data.user_rank,
       entries: query.data.leaderboard.map((u, i) => ({
         rank: (query.data.page - 1) * query.data.leaderboard.length + i + 1,
         name: u.name,
