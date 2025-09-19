@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Landing from "../landing/Landing";
+import Footer from "./components/Footer";
 
 export default function Home() {
   const [hasSeenLanding, setHasSeenLanding] = useState(false);
@@ -35,6 +36,7 @@ export default function Home() {
           <main className="flex flex-col items-center bg-[#1B1740] text-white">
             <Hero />
           </main>
+          <Footer />
         </div>  
       )}
     </div>

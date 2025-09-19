@@ -138,7 +138,7 @@ export default function Landing({ onComplete }) {
                 <>
                   <button
                     onClick={() => goNext()}
-                    className="w-full max-w-xs px-2 py-2 rounded-xl bg-indigo-400/60 border border-indigo-800/20 text-white font-semibold shadow-md"
+                    className="w-full max-w-xs px-2 py-2 rounded-xl bg-violet-400/60 border border-indigo-800/20 text-white font-semibold shadow-md"
                   >
                     Devam Et
                   </button>
@@ -153,7 +153,7 @@ export default function Landing({ onComplete }) {
               {step === slides.length && (
                 <button
                   onClick={() => setStep(slides.length + 1)}
-                  className="w-full max-w-xs px-6 py-3 rounded-xl bg-indigo-400/30 border border-indigo-400/50 text-white font-semibold shadow-md hover:bg-white/20 transition"
+                  className="w-full max-w-xs px-6 py-3 rounded-xl bg-violet-400/60 border border-indigo-400/50 text-white font-semibold shadow-md hover:bg-white/20 transition"
                 >
                   Başla
                 </button>

@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useLeaderboard } from "../../lib/hooks/useLeaderboard";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import LoadingScreen from "../components/LoadingScreen";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -13,11 +14,7 @@ export default function LeaderboardPage() {
     const params = useSearchParams();
     const page = parseInt(params.get("page") || "1", 10);
 
-    const {
-        isLoading,
-        error,
-        formatted,    // { page, totalPages, totalUsers, entries }
-    } = useLeaderboard(page);
+    const { isLoading, error, formatted } = useLeaderboard(page);
 
     if (isLoading) return <LoadingScreen />;
     if (error) return (
@@ -189,6 +186,8 @@ export default function LeaderboardPage() {
                     </button>
                 </motion.div>
             </div>
+
+            <Footer />
         </div>
     );
 }

@@ -2,7 +2,6 @@
 
 import { MapPin } from "lucide-react";
 import { motion } from "framer-motion";
-import { BorderBeam } from "@/app/components/BorderBeam";
 
 export default function MapOpenButton({ onClick, title = "Haritayı Aç" }) {
     return (
@@ -15,24 +14,7 @@ export default function MapOpenButton({ onClick, title = "Haritayı Aç" }) {
              flex items-center justify-center"
         >
             <div className="relative isolate h-23 w-23 rounded-full flex items-center justify-center">
-                <BorderBeam
-                    className="z-20"
-                    size={128}
-                    duration={4}
-                    borderWidth={20}
-                    colorFrom="#454085"
-                    colorTo="#8C5DB3"
-                />
 
-                <BorderBeam
-                    className="z-20 absolute top-0 left-0"
-                    size={128}
-                    duration={4}
-                    delay={2}
-                    borderWidth={20}
-                    colorFrom="#454085"
-                    colorTo="#8C5DB3"
-                />
 
                 {/* ► İç mor buzlu cam gövde */}
                 <span

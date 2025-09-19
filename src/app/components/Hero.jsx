@@ -4,9 +4,12 @@ import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import Background from "../../../public/lottie/backgroundsm.json";
 import StartGame from "./StartGame";
+import Stats from "./Stats";
 import Podium from "./Podium";
+import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#1B1740] text-white flex items-center justify-center">
 
@@ -60,7 +63,47 @@ export default function Hero() {
 
         <div className="w-full -mt-1 h-20 bg-gradient-to-b from-[#897fa6] via-[#897fa6] to-[#1B1740]" />
 
-        <Podium />
+        <div className="w-full flex flex-col items-center justify-center min-h-[80vh] px-4 py-12">
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold tracking-tight"
+            initial={{ y: 18, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.7, ease: "easeOut", delay: 0.05 }}
+            viewport={{ once: true }}
+          >
+            PARLAYAN YILDIZLAR
+          </motion.h2>
+          <motion.p
+            className="mt-2 mb-6 text-gray-300 font-medium max-w-md mx-auto"
+            initial={{ y: 18, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
+            viewport={{ once: true }}
+          >
+            En yüksek skorlara sahip 3 oyuncu
+          </motion.p>
+
+          <motion.div
+            className="flex items-center justify-center mb-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.25 }}
+            viewport={{ once: true }}
+          >
+            <div className="h-[1px] w-16 bg-gradient-to-r from-transparent to-violet-400/40"></div>
+            <div className="mx-3 flex space-x-1">
+              <div className="w-1 h-1 rounded-full bg-violet-400"></div>
+              <div className="w-1 h-1 rounded-full bg-violet-300"></div>
+              <div className="w-1 h-1 rounded-full bg-violet-400"></div>
+            </div>
+            <div className="h-[1px] w-16 bg-gradient-to-l from-transparent to-violet-400/40"></div>
+          </motion.div>
+          
+          <Podium />
+
+        </div>
+
+        <Stats />
       </div>
     </div>
   );
