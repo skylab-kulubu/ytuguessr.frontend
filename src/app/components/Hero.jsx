@@ -2,11 +2,10 @@
 
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
-import Background from "../../../public/lottie/backgroundsm.json";
+import Background from "../../../public/lottie/background.json";
 import StartGame from "./StartGame";
 import Stats from "./Stats";
 import Podium from "./Podium";
-import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
 

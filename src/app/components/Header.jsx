@@ -30,8 +30,8 @@ export default function Header() {
     };
 
     return (
-        <header className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 text-white transition-all duration-400 ease-in-out border-b border-gray-700/50
-            ${isScrolled && 'bg-gray-900/80 backdrop-blur-md '}`}>
+        <header className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 text-white transition-all duration-400 ease-in-out border-b
+            ${isScrolled ? 'bg-gray-900/80 backdrop-blur-md border-gray-700/50' : 'border-transparent'}`}>
 
             <div className="flex items-center">
                 <img src="/logo.svg" alt="YTUGuessr Logo" className="h-7" />

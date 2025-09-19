@@ -1,4 +1,5 @@
 import { Providers } from "../lib/providers";
+import ScreenGuard from "../lib/ScreenGuard";
 import "./globals.css"; 
 
 export const metadata = {
@@ -10,7 +11,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="bg-[#1B1740]">
-        <Providers>{children}</Providers>
+        <Providers>
+          <ScreenGuard>
+            {children}
+          </ScreenGuard>
+        </Providers>
       </body>
     </html>
   )
